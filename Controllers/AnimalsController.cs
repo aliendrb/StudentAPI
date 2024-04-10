@@ -37,15 +37,20 @@ namespace VetAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateAnimal(Animal animal) 
+        public IActionResult UpdateAnimal(Animal animal, int id) 
         {
-            return Ok();
+            if (_mockDb.RemoveAnimal(id) is null) return NotFound();
+            _mockDb.AddAnimal(animal);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAnimal(int id) 
         {
-            return Ok();
+            var animal = _mockDb.GetAnimal(id);
+            if (animal is null) return NotFound();
+            _mockDb.RemoveAnimal(id);
+            return NoContent();
         }
     }
 }

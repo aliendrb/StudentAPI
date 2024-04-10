@@ -1,4 +1,5 @@
-﻿using VetAPI.Classes;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using VetAPI.Classes;
 namespace VetAPI.Services
 {
     public interface IMockDb 
@@ -6,6 +7,7 @@ namespace VetAPI.Services
         public ICollection<Animal> GetAllAnimals();
         public Animal? AddAnimal(Animal animal);
         public Animal? GetAnimal(int id);
+        public Animal? RemoveAnimal(int id);
     }
     public class MockDb : IMockDb
     {
@@ -49,6 +51,14 @@ namespace VetAPI.Services
         public Animal? GetAnimal(int id) 
         {
             return _animals.FirstOrDefault(animal => animal.Id == id);
+        }
+
+        public Animal? RemoveAnimal(int id) 
+        {
+            var animal = _animals.FirstOrDefault(animal =>animal.Id == id);
+            if (animal is null) return null;
+            _animals.Remove(animal);
+            return animal;
         }
     }
 }
