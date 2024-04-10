@@ -21,25 +21,28 @@ namespace VetAPI.Controllers
             return Ok(_mockDb.GetAllAnimals());
         }
 
-        [HttpGet("id")]
-        public IActionResult GetId(int id) 
+        [HttpGet("{id}")]
+        public IActionResult GetAnimal(int id) 
         {
-            return Ok($"got animal with id: {id}");
+            var animal = _mockDb.GetAnimal(id);
+            if (animal is null) return NotFound();
+            return Ok(animal);
         }
 
         [HttpPost]
         public IActionResult AddAnimal(Animal animal) 
         {
+            _mockDb.AddAnimal(animal);
             return Created($"animals/{animal.Id}", animal);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public IActionResult UpdateAnimal(Animal animal) 
         {
             return Ok();
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteAnimal(int id) 
         {
             return Ok();

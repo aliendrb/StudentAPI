@@ -4,6 +4,8 @@ namespace VetAPI.Services
     public interface IMockDb 
     {
         public ICollection<Animal> GetAllAnimals();
+        public Animal? AddAnimal(Animal animal);
+        public Animal? GetAnimal(int id);
     }
     public class MockDb : IMockDb
     {
@@ -36,6 +38,17 @@ namespace VetAPI.Services
         public ICollection<Animal> GetAllAnimals() 
         {
             return _animals;
+        }
+
+        public Animal? AddAnimal(Animal animal) 
+        {
+            _animals.Add(animal);
+            return animal;
+        }
+
+        public Animal? GetAnimal(int id) 
+        {
+            return _animals.FirstOrDefault(animal => animal.Id == id);
         }
     }
 }
