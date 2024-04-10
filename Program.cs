@@ -1,4 +1,6 @@
 
+using VetAPI.Services;
+
 namespace StudentAPI
 {
     public class Program
@@ -7,9 +9,10 @@ namespace StudentAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
+            builder.Services.AddSingleton<IMockDb, MockDb>();
 
             var app = builder.Build();
 
@@ -19,12 +22,10 @@ namespace StudentAPI
                 app.UseSwaggerUI();
             }
 
+            app.MapControllers();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-
-            app.MapControllers();
 
             app.Run();
         }
