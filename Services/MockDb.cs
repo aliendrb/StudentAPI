@@ -8,31 +8,34 @@ namespace VetAPI.Services
         public Animal? AddAnimal(Animal animal);
         public Animal? GetAnimal(int id);
         public Animal? RemoveAnimal(int id);
+        public ICollection<Visit> GetVisits(int id);
+        public Visit? AddVisit(Visit visit, int id);
     }
     public class MockDb : IMockDb
     {
         private ICollection<Animal> _animals;
 
-        public MockDb() 
+        public MockDb()
         {
-            _animals = new List<Animal> 
+            _animals = new List<Animal>
             {
-                new Animal 
+                new Animal
                 {
                     Id = 1,
                     Name = "Fluffy",
                     Category = "Cat",
                     Mass = 5.3,
-                    Color = "Black"
+                    Color = "Black",
+                    Visits = new List<Visit>()
                 },
-
                 new Animal
                 {
                     Id = 2,
                     Name = "Pete",
                     Category = "Dog",
                     Mass = 3.6,
-                    Color = "Brown"
+                    Color = "Brown",
+                    Visits = new List<Visit>()
                 }
             };
         }
@@ -59,6 +62,22 @@ namespace VetAPI.Services
             if (animal is null) return null;
             _animals.Remove(animal);
             return animal;
+        }
+
+        public ICollection<Visit> GetVisits(int id) 
+        {
+            var animal = _animals.FirstOrDefault(animal => animal.Id == id);
+            if (animal is null) return null;
+            List<Visit> visits = animal.Visits;
+            return visits;
+        }
+
+        public Visit? AddVisit(Visit visit, int id) 
+        {
+            var animal = _animals.FirstOrDefault(animal => animal.Id == id);
+            if (animal is null) return null;
+            animal.Visits.Add(visit);
+            return visit;
         }
     }
 }

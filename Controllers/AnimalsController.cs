@@ -29,11 +29,26 @@ namespace VetAPI.Controllers
             return Ok(animal);
         }
 
+        [HttpGet("{id}/visits")]
+        public IActionResult GetVisits(int id)
+        {
+            var visits = _mockDb.GetVisits(id);
+            if (visits is null) return NotFound();
+            return Ok(visits);
+        }
+
         [HttpPost]
         public IActionResult AddAnimal(Animal animal) 
         {
             _mockDb.AddAnimal(animal);
             return Created($"animals/{animal.Id}", animal);
+        }
+
+        [HttpPost("visits")]
+        public IActionResult AddVisit(Visit visit, int id) 
+        {
+            var animal = _mockDb.AddVisit(visit, id);
+            return Created($"animals/{id}/visits/{visit.Date}", visit);
         }
 
         [HttpPut("{id}")]
