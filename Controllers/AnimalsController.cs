@@ -44,7 +44,7 @@ namespace VetAPI.Controllers
             return Created($"animals/{animal.Id}", animal);
         }
 
-        [HttpPost("visits")]
+        [HttpPost("add-visit")]
         public IActionResult AddVisit(Visit visit, int id) 
         {
             var animal = _mockDb.AddVisit(visit, id);
